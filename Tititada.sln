@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34408.163
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tititada", "Tititada\Tititada.csproj", "{54AADACF-49AC-47BA-BFF8-93236016D019}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "w1", "w1", "{93333DF3-E17B-42E4-8B81-07CF35FDF4B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OOP", "OOP\OOP.csproj", "{9F85E3E6-2039-4A8F-8838-887F8844E059}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{54AADACF-49AC-47BA-BFF8-93236016D019}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54AADACF-49AC-47BA-BFF8-93236016D019}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54AADACF-49AC-47BA-BFF8-93236016D019}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54AADACF-49AC-47BA-BFF8-93236016D019}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F85E3E6-2039-4A8F-8838-887F8844E059}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F85E3E6-2039-4A8F-8838-887F8844E059}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F85E3E6-2039-4A8F-8838-887F8844E059}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F85E3E6-2039-4A8F-8838-887F8844E059}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9F85E3E6-2039-4A8F-8838-887F8844E059} = {93333DF3-E17B-42E4-8B81-07CF35FDF4B2}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DA3F676B-CF60-41BC-B4DB-155326688611}
+	EndGlobalSection
+EndGlobal
