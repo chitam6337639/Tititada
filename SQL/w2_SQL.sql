@@ -53,6 +53,7 @@ FROM employees e
 LEFT JOIN assignments a ON e.employee_id = a.employee_id
 LEFT JOIN projects p ON a.project_id = p.project_id;
 
+CREATE INDEX idx_department_id ON employees(department_id);
 
 
 select *
