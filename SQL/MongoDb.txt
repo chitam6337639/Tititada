@@ -1,0 +1,418 @@
+db.users.insertOne({name: "John"})
+{
+  acknowledged: true,
+  insertedId: ObjectId('676b8682e875c6857a4eeb86')
+}
+appdb> db.users.find()
+[ { _id: ObjectId('676b8682e875c6857a4eeb86'), name: 'John' } ]
+appdb> db.users.insertOne({name: "Jay"})
+{
+  acknowledged: true,
+  insertedId: ObjectId('676b8809e875c6857a4eeb87')
+}
+appdb> db.users.find()
+[
+  { _id: ObjectId('676b8682e875c6857a4eeb86'), name: 'John' },
+  { _id: ObjectId('676b8809e875c6857a4eeb87'), name: 'Jay' }
+]
+appdb> db.users.insertOne({name: "Sally", age: 20, address:{street: "12 Nguyen Van Linh"}, hobbies: ["running"]})
+{
+  acknowledged: true,
+  insertedId: ObjectId('676b88a8e875c6857a4eeb88')
+}
+appdb> db.users.insertMany([{name: "Kyle", age: 35, address:{street: "Nguyen Siue", city: "HCM"}, hobbies:["running", "swimming"]},{name: "Thor", age: 40. address:{street: "Ho Van Hue", city:"HCM"}, hobbies:["Bowling","Gym"]} ])
+Uncaught:
+SyntaxError: Unexpected token, expected "," (1:148)
+
+> 1 | db.users.insertMany([{name: "Kyle", age: 35, address:{street: "Nguyen Siue", city: "HCM"}, hobbies:["running", "swimming"]},{name: "Thor", age: 40. address:{street: "Ho Van Hue", city:"HCM"}, hobbies:["Bowling","Gym"]} ])
+    |                                                                                               
+                                                      ^
+  2 |
+
+appdb> db.users.insertMany([{name: "Kyle", age: 35, address:{street: "Nguyen Siue", city: "HCM"}, hobbies:["running", "swimming"]},{name: "Thor", age: 40, address:{street: "Ho Van Hue", city:"HCM"}, hobbies:["Bowling","Gym"]} ])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('676b8a8fe875c6857a4eeb89'),
+    '1': ObjectId('676b8a8fe875c6857a4eeb8a')
+  }
+}
+appdb> db.users.find()
+[
+  { _id: ObjectId('676b8682e875c6857a4eeb86'), name: 'John' },
+  { _id: ObjectId('676b8809e875c6857a4eeb87'), name: 'Jay' },
+  {
+    _id: ObjectId('676b88a8e875c6857a4eeb88'),
+    name: 'Sally',
+    age: 20,
+    address: { street: '12 Nguyen Van Linh' },
+    hobbies: [ 'running' ]
+  },
+  {
+    _id: ObjectId('676b8a8fe875c6857a4eeb89'),
+    name: 'Kyle',
+    age: 35,
+    address: { street: 'Nguyen Siue', city: 'HCM' },
+    hobbies: [ 'running', 'swimming' ]
+  },
+  {
+    _id: ObjectId('676b8a8fe875c6857a4eeb8a'),
+    name: 'Thor',
+    age: 40,
+    address: { street: 'Ho Van Hue', city: 'HCM' },
+    hobbies: [ 'Bowling', 'Gym' ]
+  }
+]
+appdb> db.users.find().limit(2)
+[
+  { _id: ObjectId('676b8682e875c6857a4eeb86'), name: 'John' },
+  { _id: ObjectId('676b8809e875c6857a4eeb87'), name: 'Jay' }
+]
+appdb> db.users.find().limit(1)
+[ { _id: ObjectId('676b8682e875c6857a4eeb86'), name: 'John' } ]
+appdb> db.users.find().limit(3)
+[
+  { _id: ObjectId('676b8682e875c6857a4eeb86'), name: 'John' },
+  { _id: ObjectId('676b8809e875c6857a4eeb87'), name: 'Jay' },
+  {
+    _id: ObjectId('676b88a8e875c6857a4eeb88'),
+    name: 'Sally',
+    age: 20,
+    address: { street: '12 Nguyen Van Linh' },
+    hobbies: [ 'running' ]
+  }
+]
+appdb> db.users.find().sort({name: 1}).limit(2)
+[
+  { _id: ObjectId('676b8809e875c6857a4eeb87'), name: 'Jay' },
+  { _id: ObjectId('676b8682e875c6857a4eeb86'), name: 'John' }
+]
+appdb> db.users.find().sort({name: 1}).limit(3)
+[
+  { _id: ObjectId('676b8809e875c6857a4eeb87'), name: 'Jay' },
+  { _id: ObjectId('676b8682e875c6857a4eeb86'), name: 'John' },
+  {
+    _id: ObjectId('676b8a8fe875c6857a4eeb89'),
+    name: 'Kyle',
+    age: 35,
+    address: { street: 'Nguyen Siue', city: 'HCM' },
+    hobbies: [ 'running', 'swimming' ]
+  }
+]
+appdb> db.users.find().find({name: "Thor"})
+TypeError: db.users.find().find is not a function
+appdb> db.users.find({name: "Thor"})
+[
+  {
+    _id: ObjectId('676b8a8fe875c6857a4eeb8a'),
+    name: 'Thor',
+    age: 40,
+    address: { street: 'Ho Van Hue', city: 'HCM' },
+    hobbies: [ 'Bowling', 'Gym' ]
+  }
+]
+appdb> db.users.find({name: {$eq:"Thor"}})
+[
+  {
+    _id: ObjectId('676b8a8fe875c6857a4eeb8a'),
+    name: 'Thor',
+    age: 40,
+    address: { street: 'Ho Van Hue', city: 'HCM' },
+    hobbies: [ 'Bowling', 'Gym' ]
+  }
+]
+appdb> db.users.find({name: {$ne:"Thor"}})
+[
+  { _id: ObjectId('676b8682e875c6857a4eeb86'), name: 'John' },
+  { _id: ObjectId('676b8809e875c6857a4eeb87'), name: 'Jay' },
+  {
+    _id: ObjectId('676b88a8e875c6857a4eeb88'),
+    name: 'Sally',
+    age: 20,
+    address: { street: '12 Nguyen Van Linh' },
+    hobbies: [ 'running' ]
+  },
+  {
+    _id: ObjectId('676b8a8fe875c6857a4eeb89'),
+    name: 'Kyle',
+    age: 35,
+    address: { street: 'Nguyen Siue', city: 'HCM' },
+    hobbies: [ 'running', 'swimming' ]
+  }
+]
+appdb> db.users.find({age: {$gt: 20}})
+[
+  {
+    _id: ObjectId('676b8a8fe875c6857a4eeb89'),
+    name: 'Kyle',
+    age: 35,
+    address: { street: 'Nguyen Siue', city: 'HCM' },
+    hobbies: [ 'running', 'swimming' ]
+  },
+  {
+    _id: ObjectId('676b8a8fe875c6857a4eeb8a'),
+    name: 'Thor',
+    age: 40,
+    address: { street: 'Ho Van Hue', city: 'HCM' },
+    hobbies: [ 'Bowling', 'Gym' ]
+  }
+]
+appdb> db.users.find({age: {$exists: true}})
+[
+  {
+    _id: ObjectId('676b88a8e875c6857a4eeb88'),
+    name: 'Sally',
+    age: 20,
+    address: { street: '12 Nguyen Van Linh' },
+    hobbies: [ 'running' ]
+  },
+  {
+    _id: ObjectId('676b8a8fe875c6857a4eeb89'),
+    name: 'Kyle',
+    age: 35,
+    address: { street: 'Nguyen Siue', city: 'HCM' },
+    hobbies: [ 'running', 'swimming' ]
+  },
+  {
+    _id: ObjectId('676b8a8fe875c6857a4eeb8a'),
+    name: 'Thor',
+    age: 40,
+    address: { street: 'Ho Van Hue', city: 'HCM' },
+    hobbies: [ 'Bowling', 'Gym' ]
+  }
+]
+appdb> db.users.find({age: {$exists: false}})
+[
+  { _id: ObjectId('676b8682e875c6857a4eeb86'), name: 'John' },
+  { _id: ObjectId('676b8809e875c6857a4eeb87'), name: 'Jay' }
+]
+appdb> db.users.find({$or:[{age:{$lte: 20}}, {name: "Thor"}]})
+[
+  {
+    _id: ObjectId('676b88a8e875c6857a4eeb88'),
+    name: 'Sally',
+    age: 20,
+    address: { street: '12 Nguyen Van Linh' },
+    hobbies: [ 'running' ]
+  },
+  {
+    _id: ObjectId('676b8a8fe875c6857a4eeb8a'),
+    name: 'Thor',
+    age: 40,
+    address: { street: 'Ho Van Hue', city: 'HCM' },
+    hobbies: [ 'Bowling', 'Gym' ]
+  }
+]
+appdb> db.users.find({age: { $not:{$lte: 20}}})
+[
+  { _id: ObjectId('676b8682e875c6857a4eeb86'), name: 'John' },
+  { _id: ObjectId('676b8809e875c6857a4eeb87'), name: 'Jay' },
+  {
+    _id: ObjectId('676b8a8fe875c6857a4eeb89'),
+    name: 'Kyle',
+    age: 35,
+    address: { street: 'Nguyen Siue', city: 'HCM' },
+    hobbies: [ 'running', 'swimming' ]
+  },
+  {
+    _id: ObjectId('676b8a8fe875c6857a4eeb8a'),
+    name: 'Thor',
+    age: 40,
+    address: { street: 'Ho Van Hue', city: 'HCM' },
+    hobbies: [ 'Bowling', 'Gym' ]
+  }
+]
+appdb> db.users.insertMany([{name: "Tom", balance: 100, debt: 200}, {name:"Captian", balance: 20, debt: 0}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('676ba8a2e875c6857a4eeb8b'),
+    '1': ObjectId('676ba8a2e875c6857a4eeb8c')
+  }
+}
+appdb> db.users.find({$expr:{$gt:["debt","balance"]}})
+[
+  { _id: ObjectId('676b8682e875c6857a4eeb86'), name: 'John' },
+  { _id: ObjectId('676b8809e875c6857a4eeb87'), name: 'Jay' },
+  {
+    _id: ObjectId('676b88a8e875c6857a4eeb88'),
+    name: 'Sally',
+    age: 20,
+    address: { street: '12 Nguyen Van Linh' },
+    hobbies: [ 'running' ]
+  },
+  {
+    _id: ObjectId('676b8a8fe875c6857a4eeb89'),
+    name: 'Kyle',
+    age: 35,
+    address: { street: 'Nguyen Siue', city: 'HCM' },
+    hobbies: [ 'running', 'swimming' ]
+  },
+  {
+    _id: ObjectId('676b8a8fe875c6857a4eeb8a'),
+    name: 'Thor',
+    age: 40,
+    address: { street: 'Ho Van Hue', city: 'HCM' },
+    hobbies: [ 'Bowling', 'Gym' ]
+  },
+  {
+    _id: ObjectId('676ba8a2e875c6857a4eeb8b'),
+    name: 'Tom',
+    balance: 100,
+    debt: 200
+  },
+  {
+    _id: ObjectId('676ba8a2e875c6857a4eeb8c'),
+    name: 'Captian',
+    balance: 20,
+    debt: 0
+  }
+]
+appdb> db.users.find({$expr:{$gt:["$debt","$balance"]}})
+[
+  {
+    _id: ObjectId('676ba8a2e875c6857a4eeb8b'),
+    name: 'Tom',
+    balance: 100,
+    debt: 200
+  }
+]
+appdb> db.users.findOne({age:{$lte:40}})
+{
+  _id: ObjectId('676b88a8e875c6857a4eeb88'),
+  name: 'Sally',
+  age: 20,
+  address: { street: '12 Nguyen Van Linh' },
+  hobbies: [ 'running' ]
+}
+appdb> db.users.countDocuments({age:{$lte:40}})
+3
+appdb> db.users.updateOne({age: 40}, {$set: {age: 27}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+appdb> db.users.findOne({age:27})
+{
+  _id: ObjectId('676b8a8fe875c6857a4eeb8a'),
+  name: 'Thor',
+  age: 27,
+  address: { street: 'Ho Van Hue', city: 'HCM' },
+  hobbies: [ 'Bowling', 'Gym' ]
+}
+appdb> db.users.updateOne({_id: ObjectId('676b8a8fe875c6857a4eeb8a')}, {$set: {name: "new name"}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+appdb> db.users.findOne({_id: ObjectId('676b8a8fe875c6857a4eeb8a')})
+{
+  _id: ObjectId('676b8a8fe875c6857a4eeb8a'),
+  name: 'new name',
+  age: 27,
+  address: { street: 'Ho Van Hue', city: 'HCM' },
+  hobbies: [ 'Bowling', 'Gym' ]
+}
+appdb> db.users.updateOne({_id: ObjectId('676b8a8fe875c6857a4eeb8a')}, {$unset: {age: ""}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+appdb> db.users.findOne({_id: ObjectId('676b8a8fe875c6857a4eeb8a')})
+{
+  _id: ObjectId('676b8a8fe875c6857a4eeb8a'),
+  name: 'new name',
+  address: { street: 'Ho Van Hue', city: 'HCM' },
+  hobbies: [ 'Bowling', 'Gym' ]
+}
+appdb> db.users.updateOne({_id: ObjectId('676b8a8fe875c6857a4eeb8a')}, {$push: {hobbies: "Swimming"}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+appdb> db.users.findOne({_id: ObjectId('676b8a8fe875c6857a4eeb8a')})
+{
+  _id: ObjectId('676b8a8fe875c6857a4eeb8a'),
+  name: 'new name',
+  address: { street: 'Ho Van Hue', city: 'HCM' },
+  hobbies: [ 'Bowling', 'Gym', 'Swimming' ]
+}
+appdb> db.users.updateOne({_id: ObjectId('676b8a8fe875c6857a4eeb8a')}, {$pull: {hobbies: "Swimming"}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+appdb> db.users.findOne({_id: ObjectId('676b8a8fe875c6857a4eeb8a')})
+{
+  _id: ObjectId('676b8a8fe875c6857a4eeb8a'),
+  name: 'new name',
+  address: { street: 'Ho Van Hue', city: 'HCM' },
+  hobbies: [ 'Bowling', 'Gym' ]
+}
+appdb> db.users.updateMany({address: {$exists: true}}, {$unset: {address: ""}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 3,
+  modifiedCount: 3,
+  upsertedCount: 0
+}
+appdb> db.users.find()
+[
+  { _id: ObjectId('676b8682e875c6857a4eeb86'), name: 'John' },
+  { _id: ObjectId('676b8809e875c6857a4eeb87'), name: 'Jay' },
+  {
+    _id: ObjectId('676b88a8e875c6857a4eeb88'),
+    name: 'Sally',
+    age: 20,
+    hobbies: [ 'running' ]
+  },
+  {
+    _id: ObjectId('676b8a8fe875c6857a4eeb89'),
+    name: 'Kyle',
+    age: 35,
+    hobbies: [ 'running', 'swimming' ]
+  },
+  {
+    _id: ObjectId('676b8a8fe875c6857a4eeb8a'),
+    name: 'new name',
+    hobbies: [ 'Bowling', 'Gym' ]
+  },
+  {
+    _id: ObjectId('676ba8a2e875c6857a4eeb8b'),
+    name: 'Tom',
+    balance: 100,
+    debt: 200
+  },
+  {
+    _id: ObjectId('676ba8a2e875c6857a4eeb8c'),
+    name: 'Captian',
+    balance: 20,
+    debt: 0
+  }
+]
+appdb> db.users.deleteOne({name: "Captian"})
+{ acknowledged: true, deletedCount: 1 }
+appdb> db.users.createIndex({name: 1})
+name_1
+appdb> db.users.getIndexes()
+[
+  { v: 2, key: { _id: 1 }, name: '_id_' },
+  { v: 2, key: { name: 1 }, name: 'name_1' }
+]
+appdb>
