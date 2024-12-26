@@ -249,5 +249,108 @@ group by customer_number
 order by count(*) desc
 limit 1;
 
+--Ex6: https://leetcode.com/problems/big-countries/
+--A country is big if:
+--it has an area of at least three million (i.e., 3000000 km2), or
+--it has a population of at least twenty-five million (i.e., 25000000).
+--Write a solution to find the name, population, and area of the big countries.
+--Return the result table in any order.
 
+Input: 
+World table:
++-------------+-----------+---------+------------+--------------+
+| name        | continent | area    | population | gdp          |
++-------------+-----------+---------+------------+--------------+
+| Afghanistan | Asia      | 652230  | 25500100   | 20343000000  |
+| Albania     | Europe    | 28748   | 2831741    | 12960000000  |
+| Algeria     | Africa    | 2381741 | 37100000   | 188681000000 |
+| Andorra     | Europe    | 468     | 78115      | 3712000000   |
+| Angola      | Africa    | 1246700 | 20609294   | 100990000000 |
++-------------+-----------+---------+------------+--------------+
+Output: 
++-------------+------------+---------+
+| name        | population | area    |
++-------------+------------+---------+
+| Afghanistan | 25500100   | 652230  |
+| Algeria     | 37100000   | 2381741 |
++-------------+------------+---------+
 
+--Query
+select name, population, area
+from World
+where area >= 3000000 or population >= 25000000
+
+--Ex7: https://leetcode.com/problems/classes-more-than-5-students/description/
+--Write a solution to find all the classes that have at least five students.
+--Return the result table in any order.
+--The result format is in the following example.
+
+Input: 
+Courses table:
++---------+----------+
+| student | class    |
++---------+----------+
+| A       | Math     |
+| B       | English  |
+| C       | Math     |
+| D       | Biology  |
+| E       | Math     |
+| F       | Computer |
+| G       | Math     |
+| H       | Math     |
+| I       | Math     |
++---------+----------+
+Output: 
++---------+
+| class   |
++---------+
+| Math    |
++---------+
+
+--Query
+select class
+from Courses
+group by class
+having count(*) >= 5;
+
+--Ex8: https://leetcode.com/problems/tree-node/description/
+--Each node in the tree can be one of three types:
+--"Leaf": if the node is a leaf node.
+--"Root": if the node is the root of the tree.
+--"Inner": If the node is neither a leaf node nor a root node.
+--Write a solution to report the type of each node in the tree.
+--Return the result table in any order.
+--The result format is in the following example.
+
+Input: 
+Tree table:
++----+------+
+| id | p_id |
++----+------+
+| 1  | null |
+| 2  | 1    |
+| 3  | 1    |
+| 4  | 2    |
+| 5  | 2    |
++----+------+
+Output: 
++----+-------+
+| id | type  |
++----+-------+
+| 1  | Root  |
+| 2  | Inner |
+| 3  | Leaf  |
+| 4  | Leaf  |
+| 5  | Leaf  |
++----+-------+
+
+--Query
+select t.id,
+case
+    when t.p_id is null then 'Root'
+    when tt.p_id is not null then 'Inner'
+    ELSE 'Leaf'
+    end as type
+from tree t left join (select distinct p_id
+                        from tree
+                        where p_id is not null) tt on t.id = tt.p_id
