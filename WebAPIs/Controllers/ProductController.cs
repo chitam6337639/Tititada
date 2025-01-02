@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using WebAPIs.Interfaces;
 using WebAPIs.Models;
 
@@ -16,6 +18,7 @@ namespace WebAPIs.Controllers
 			_productService = productService;
 		}
 		[HttpGet]
+		[Authorize]
 		public IActionResult GetAll()
 		{
 			var products = _productService.GetAllProducts();
