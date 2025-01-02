@@ -22,6 +22,17 @@ namespace WebAPIs.Controllers
 			return Ok(products);
 		}
 
+		[HttpGet("{id}")]
+		public IActionResult GetById(Guid id)
+		{
+			var product = _productService.GetProductById(id);
+			if (product == null)
+			{
+				return NotFound(new { Message = "Product not found" });
+			}
+			return Ok(product);
+		}
+
 		[HttpPost]
 		public IActionResult CreateProduct(ProductVM productVM)
 		{
@@ -30,6 +41,40 @@ namespace WebAPIs.Controllers
 			{
 				Success = true,
 				Data = product
+			});
+		}
+
+		[HttpPut("{id}")]
+		public IActionResult UpdateProduct(Guid id,ProductVM productVM)
+		{
+			var existProduct = _productService.GetProductById(id);
+			if (existProduct == null)
+			{
+				return NotFound(new { Message = "Product not found" });
+			}
+
+			_productService.UpdateProduct(id, productVM);
+			return Ok(new
+			{
+				Success = true,
+				Message = "Success"
+			});
+		}
+
+		[HttpDelete("{id}")]
+		public IActionResult DeleteProduct(Guid id)
+		{
+			var existProduct = _productService.GetProductById(id);
+			if (existProduct == null)
+			{
+				return NotFound(new { Message = "Product not found" });
+			}
+
+			_productService.DeleteProduct(id);
+			return Ok(new
+			{
+				Success = true,
+				Message = "Success"
 			});
 		}
 	}
