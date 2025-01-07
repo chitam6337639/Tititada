@@ -18,7 +18,7 @@ namespace WebAPIs.Controllers
 			_productService = productService;
 		}
 		[HttpGet]
-		[Authorize(Roles = "Admin")]
+		//[Authorize(Roles = "Admin")]
 		public IActionResult GetAll()
 		{
 			var products = _productService.GetAllProducts();
@@ -26,30 +26,26 @@ namespace WebAPIs.Controllers
 		}
 
 		[HttpGet("{id}")]
-		public IActionResult GetById(Guid id)
+		public IActionResult GetById(int id)
 		{
 			var product = _productService.GetProductById(id);
 			if (product == null)
 			{
-				return NotFound(new { Message = "Product not found" });
+				return NotFound();
 			}
 			return Ok(product);
 		}
 
 		[HttpPost]
-		[Authorize(Roles = "Admin,User")]
-		public IActionResult CreateProduct(ProductVM productVM)
+		//[Authorize(Roles = "Admin,User")]
+		public IActionResult CreateProduct([FromBody]Product product)
 		{
-			var product = _productService.CreateProduct(productVM);
-			return Ok(new
-			{
-				Success = true,
-				Data = product
-			});
+			var createdProduct = _productService.CreateProduct(product);
+			return CreatedAtAction(nameof(GetById), new { id = createdProduct.ProductID }, createdProduct);
 		}
 
 		[HttpPut("{id}")]
-		public IActionResult UpdateProduct(Guid id,ProductVM productVM)
+		public IActionResult UpdateProduct(int id, [FromBody]Product product)
 		{
 			var existProduct = _productService.GetProductById(id);
 			if (existProduct == null)
@@ -57,16 +53,13 @@ namespace WebAPIs.Controllers
 				return NotFound(new { Message = "Product not found" });
 			}
 
-			_productService.UpdateProduct(id, productVM);
-			return Ok(new
-			{
-				Success = true,
-				Message = "Success"
-			});
+			product.ProductID = id; 
+			_productService.UpdateProduct(id,product);
+			return NoContent();
 		}
 
 		[HttpDelete("{id}")]
-		public IActionResult DeleteProduct(Guid id)
+		public IActionResult DeleteProduct(int id)
 		{
 			var existProduct = _productService.GetProductById(id);
 			if (existProduct == null)

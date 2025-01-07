@@ -17,35 +17,30 @@ namespace WebAPIs.Services
 			return _productRepository.GetAll();
 		}
 
-		public Product GetProductById(Guid id)
+		public Product GetProductById(int id)
 		{
 			return _productRepository.GetById(id);
 		}
 
-		public Product CreateProduct(ProductVM productVM)
+		public Product CreateProduct(Product product)
 		{
-			var product = new Product
-			{
-				ProductID = Guid.NewGuid(),
-				ProductName = productVM.ProductName,
-				Price = productVM.Price
-			};
 			_productRepository.Add(product);
 			return product;
 		}
 
-		public void UpdateProduct(Guid id, ProductVM productVM)
+		public void UpdateProduct(int id, Product product)
 		{
-			var product = new Product
+			var existProduct = _productRepository.GetById(product.ProductID);
+			if (existProduct != null)
 			{
-				ProductID = id,
-				ProductName = productVM.ProductName,
-				Price = productVM.Price
-			};
-			_productRepository.Update(product);
+				existProduct.ProductName = product.ProductName;
+				existProduct.Price = product.Price;
+
+				_productRepository.Update(existProduct);
+			}
 		}
 
-		public void DeleteProduct(Guid id)
+		public void DeleteProduct(int id)
 		{
 			_productRepository.Delete(id);
 		}

@@ -1,42 +1,46 @@
-﻿using WebAPIs.Interfaces;
+﻿using WebAPIs.Data;
+using WebAPIs.Interfaces;
 using WebAPIs.Models;
 
 namespace WebAPIs.Repositories
 {
 	public class ProductRepository : IProductRepository
 	{
-		private readonly List<Product> _products = new List<Product>();
+		private readonly AppDbContext _context;
+
+		public ProductRepository(AppDbContext context)
+		{
+			_context = context;
+		}
 
 		public IEnumerable<Product> GetAll()
 		{
-			return _products;
+			return _context.Products.ToList();
 		}
 
-		public Product GetById(Guid id)
+		public Product GetById(int id)
 		{
-			return _products.FirstOrDefault(p => p.ProductID == id);
+			return _context.Products.Find(id);
 		}
 		public void Add(Product product)
 		{
-			_products.Add(product);
+			_context.Products.Add(product);
+			_context.SaveChanges();
 		}
 
 		public void Update(Product product)
 		{
-			var existProduct = GetById(product.ProductID);
-			if (existProduct != null)
-			{
-				existProduct.ProductName = product.ProductName;
-				existProduct.Price = product.Price;
-			}
+			_context.Products.Update(product);
+			_context.SaveChanges();
 		}
 
-		public void Delete(Guid id)
+		public void Delete(int id)
 		{
 			var product = GetById(id);
 			if (product != null)
 			{
-				_products.Remove(product);
+				_context.Remove(product);
+				_context.SaveChanges();
 			}
 		}
 	}
