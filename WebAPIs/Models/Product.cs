@@ -1,14 +1,10 @@
 ﻿namespace WebAPIs.Models
 {
-	public class ProductVM
+	public class Product 
 	{
+		public int ProductID { get; set; }
 		public string ProductName { get; set; }
 		public double Price { get; set; }
-	}
-
-	public class Product : ProductVM
-	{
-		public Guid ProductID { get; set; }
 	}
 
 }
