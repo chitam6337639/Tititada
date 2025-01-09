@@ -18,7 +18,7 @@ namespace WebAPIs.Controllers
 			_productService = productService;
 		}
 		[HttpGet]
-		//[Authorize(Roles = "Admin")]
+		[Authorize(Roles = "admin")]
 		public IActionResult GetAll()
 		{
 			var products = _productService.GetAllProducts();
@@ -37,7 +37,7 @@ namespace WebAPIs.Controllers
 		}
 
 		[HttpPost]
-		//[Authorize(Roles = "Admin,User")]
+		[Authorize(Roles = "admin,user")]
 		public IActionResult CreateProduct([FromBody]Product product)
 		{
 			var createdProduct = _productService.CreateProduct(product);

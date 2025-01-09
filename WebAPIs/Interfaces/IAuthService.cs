@@ -2,7 +2,8 @@
 {
 	public interface IAuthService
 	{
-		string Authenticate (string username, string password);
+		Task<string> AuthenticateAsync(string username, string password);
 		bool ValidateToken(string token);
+		string GetUsernameFromToken(string token);
 	}
 }

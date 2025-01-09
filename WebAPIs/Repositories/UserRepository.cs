@@ -1,19 +1,23 @@
-﻿using WebAPIs.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using WebAPIs.Data;
+using WebAPIs.Interfaces;
 using WebAPIs.Models;
 
 namespace WebAPIs.Repositories
 {
 	public class UserRepository : IUserRepository
 	{
-		private readonly List<User> _users = new()
-		{
-			new User { Username = "admin", Password = "1234", Role = "Admin" },
-			new User { Username = "user", Password = "1234", Role = "User" }
-		};
+		private readonly AppDbContext _context;
 
-		public User Authentication(string username, string password)
+		public UserRepository(AppDbContext context)
 		{
-			return _users.FirstOrDefault(u => u.Username == username && u.Password == password);
+			_context = context;
+		}
+
+		public async Task<User> AuthenticateAsync(string username, string password)
+		{
+			return await _context.Users
+				.SingleOrDefaultAsync(u => u.Username == username && u.Password == password);
 		}
 	}
 }

@@ -16,9 +16,14 @@ namespace WebAPIs.Controllers
 		}
 
 		[HttpPost("login")]
-		public IActionResult Login([FromBody] LoginVM login)
+		public async Task<IActionResult> Login([FromBody] LoginVM login)
 		{
-			var token = _authService.Authenticate(login.Username, login.Password);
+			if (login == null || string.IsNullOrEmpty(login.Username) || string.IsNullOrEmpty(login.Password))
+			{
+				return BadRequest(new { Message = "Username and password are required" });
+			}
+
+			var token = await _authService.AuthenticateAsync(login.Username, login.Password);
 
 			if (string.IsNullOrEmpty(token))
 			{

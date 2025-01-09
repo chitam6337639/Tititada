@@ -17,13 +17,10 @@ namespace WebAPIs.Services
 			_configuration = configuration;
 		}
 
-		public string Authenticate(string username, string password)
+		public async Task<string> AuthenticateAsync(string username, string password)
 		{
-			var user = _userRepository.Authentication(username, password);
-			if (user == null)
-			{
-				return null;
-			}
+			var user = await _userRepository.AuthenticateAsync(username, password);
+			if (user == null) return null;
 
 			var claims = new[]
 			{
@@ -68,6 +65,16 @@ namespace WebAPIs.Services
 			{
 				return false;
 			}
+		}
+		public string GetUsernameFromToken(string token)
+		{
+			var tokenHandler = new JwtSecurityTokenHandler();
+			var jwtToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
+			if (jwtToken == null)
+				return null;
+
+			var usernameClaim = jwtToken.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name);
+			return usernameClaim?.Value;
 		}
 	}
 }
