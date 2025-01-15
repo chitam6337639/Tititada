@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using CleanArchWithCQRS.Domain.Repository;
+using CleanArchWithCQRS.Infrastructure.Catching;
 using CleanArchWithCQRS.Infrastructure.Data;
 using CleanArchWithCQRS.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,14 @@ namespace CleanArchWithCQRS.Infrastructure
 				                  throw new InvalidOperationException("Connection string 'dbcontext not found'")));
 
 			services.AddTransient<IProductRepository, ProductRepository>();
+			services.AddSingleton<ICacheService, CacheService>();
+
+			//add Redis Cache
+			services.AddStackExchangeRedisCache(options =>
+			{
+				options.Configuration = configuration.GetConnectionString("Redis");
+			});
+
 			return services;
 		}
 	}
