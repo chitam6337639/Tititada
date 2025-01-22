@@ -4,6 +4,8 @@ using CleanArchWithCQRS.Application.Products.Commands.UpdateProduct;
 using CleanArchWithCQRS.Application.Products.Queries.GetProductById;
 using CleanArchWithCQRS.Application.Products.Queries.GetProducts;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArchWithCQRS.API.Controllers
@@ -12,12 +14,15 @@ namespace CleanArchWithCQRS.API.Controllers
 	[ApiController]
 	public class ProductController : ApiControllerBase
 	{
+		[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+		[Authorize(Roles = "Admin")]
 		[HttpGet]
 		public async Task<IActionResult> GetAllAsync()
 		{
 			var products = await Mediator.Send(new GetProductQuery());
 			return Ok(products);
 		}
+
 
 		[HttpGet("{id}")]
 		public async Task<IActionResult> GetById(int id)

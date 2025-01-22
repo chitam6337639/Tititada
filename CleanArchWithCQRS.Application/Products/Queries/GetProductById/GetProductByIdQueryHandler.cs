@@ -23,6 +23,10 @@ namespace CleanArchWithCQRS.Application.Products.Queries.GetProductById
 		public async Task<ProductVM> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
 		{
 			var product = await _productRepository.GetByIdAsync(request.ProductId);
+			if (product == null)
+			{
+				return null;
+			}
 			return _mapper.Map<ProductVM>(product);
 		}
 
